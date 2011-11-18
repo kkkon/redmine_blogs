@@ -32,7 +32,8 @@ Redmine::Plugin.register :redmine_blogs do
     permission :view_blogs, :blogs => [:index, :show, :show_by_tag, :history]
   end
 
-  menu :project_menu, :blogs, {:controller => 'blogs', :action => 'index'}, :caption => 'Blogs', :after => :news, :param => :project_id
+  menu :project_menu, :blogs, {:controller => 'blogs', :action => 'index'},
+       :caption => 'Blogs', :after => :news, :param => :project_id
 
   activity_provider :blogs
 end
