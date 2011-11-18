@@ -42,7 +42,9 @@ class BlogsController < ApplicationController
   end
 
   def new
-    @blog = Blog.new(:author => User.current, :project => @project)
+    @blog = Blog.new
+    @blog.author = User.current
+    @blog.project = @project
     if request.post?
       @blog.attributes = params[:blog]
       if @blog.save

@@ -2,10 +2,13 @@
 
 class Blog < ActiveRecord::Base
   unloadable
+
   belongs_to :project
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   has_many :comments, :as => :commented, :dependent => :delete_all, :order => "created_on"
+
   acts_as_taggable
+  acts_as_attachable
 
   validates_presence_of :title, :description
   validates_length_of :title, :maximum => 255
@@ -29,10 +32,6 @@ class Blog < ActiveRecord::Base
                      # sort by id so that limited eager loading doesn't break with postgresql
                      :order_column => "id",
                      :project_key => ""
-
-  acts_as_attachable
-
-  activity_provider_options["blogs"].delete(:permission)
 
   # returns latest blogs for projects visible by user
   def self.latest(user = User.current, count = 5)
