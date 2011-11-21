@@ -17,6 +17,9 @@ Dispatcher.to_prepare :redmine_blogs do
   require_dependency 'application_controller'
   ApplicationController.send(:include, RedmineBlogs::Patches::ApplicationControllerPatch)
 
+  require_dependency 'application_helper' 
+  ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
+
   require_dependency 'acts_as_taggable'
 end
 

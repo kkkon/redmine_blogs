@@ -1,13 +1,13 @@
 <div class="contextual">
-  <% if User.current.allowed_to?({:controller => 'blogs', :action => 'new'}, @project, {:global => true}) %>
-    <%= link_to(l(:label_post_new),
-                {:controller => 'blogs', :action => 'new', :project_id => @project},
-                :class => 'icon icon-add',
-                :onclick => 'Element.show("add-blog"); return false;') %>
-  <% end %>
+<%= link_to_if_authorized l(:label_post_new),
+                          { :controller => 'blogs',
+                            :action => 'new',
+                            :project_id => @project,
+                            :global => true },
+                          :class => 'icon icon-add',
+                          :onclick => 'Element.show("add-blog"); return false;' %>
 </div>
 
-<% if User.current.allowed_to?({:controller => 'blogs', :action => 'new'}, @project, {:global => true}) %>
 <div id="add-blog" style="display:none;">
 <h2><%=l(:label_post_new)%></h2>
 <% labelled_tabular_form_for :blog, @blog, :url => { :controller => 'blogs', :action => 'new', :project_id => @project },
@@ -20,13 +20,12 @@
                    { :url => { :controller => 'blogs', :action => 'preview' },
                      :method => 'post',
                      :update => 'preview',
-                     :with => "Form.serialize('blog-form')"
-                   }, :accesskey => accesskey(:preview) %> |
+                     :with => "Form.serialize('blog-form')" },
+                   :accesskey => accesskey(:preview) %> |
 <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("add-blog")' %>
 <% end %>
 <div id="preview" class="wiki"></div>
 </div>
-<% end %>
 
 <h2><%=l(:label_blog_plural)%></h2>
 
