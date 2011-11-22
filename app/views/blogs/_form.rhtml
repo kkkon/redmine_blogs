@@ -21,7 +21,7 @@
 			maxitem:0, // max item for out, 0-show all 
 			minlength:2, // min length str for search tags 
 			maxlength:10, // max length str for search tags 
-            loadinfo: "<%= url_for(:controller => 'blogs', :action => 'get_tag_list', :project_id => @project) %>" //file - data tags 
+            loadinfo: "<%= url_for(:controller => 'blogs', :action => 'get_tag_list') %>" //file - data tags 
 		});
 	})
 </script>

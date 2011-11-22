@@ -6,9 +6,9 @@ class BlogsController < ApplicationController
 
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_user, :only => [:index]
-  before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag, :get_tag_list]
+  before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag]
   before_filter :find_project, :only => [:index]
-  before_filter :authorize, :except => [:preview]
+  before_filter :authorize, :except => [:preview, :get_tag_list]
   accept_key_auth :index, :show_by_tag
 
   def index
