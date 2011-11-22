@@ -6,7 +6,6 @@
                           { :controller => 'blogs',
                             :action => 'edit',
                             :id => @blog,
-                            :project_id => @project,
                             :global => true },
                           :class => 'icon icon-edit',
                           :accesskey => accesskey(:edit),
@@ -15,7 +14,6 @@
                           { :controller => 'blogs',
                             :action => 'destroy',
                             :id => @blog,
-                            :project_id => @project,
                             :global => true },
                           :confirm => l(:text_are_you_sure),
                           :method => :post,
@@ -23,14 +21,14 @@
 </div>
 
 <div id="edit-blog" style="display:none;">
-<% labelled_tabular_form_for :blog, @blog, :url => { :action => "edit", :id => @blog, :project_id => @project },
+<% labelled_tabular_form_for :blog, @blog, :url => { :action => "edit", :id => @blog },
                                            :html => { :id => 'blog-form', 
                                                       :class => nil,
                                                       :multipart => true } do |f| %> 
 <%= render :partial => 'form', :locals => { :f => f } %>
 <%= submit_tag l(:button_save) %>
 <%= link_to_remote l(:label_preview),
-                   { :url => { :controller => 'blogs', :action => 'preview', :id => @blog, :project_id => @project },
+                   { :url => { :controller => 'blogs', :action => 'preview', :id => @blog },
                      :method => 'post',
                      :update => 'preview',
                      :with => "Form.serialize('blog-form')"
@@ -44,7 +42,7 @@
 <span class="author"><%= authoring @blog.created_on, @blog.author %></span></em></p>
 <div class="tags">
 <% tag_cloud @blog.tag_counts, %w(css1 css2 css3 css4) do |tag, css_class| %>
-    <%= link_to tag.name, { :action => :show_by_tag, :id => tag.name }, :class => css_class %>
+    <%= link_to tag.name, { :action => :show_by_tag, :id => tag.name, :project_id => @project }, :class => css_class %>
 <% end %>
 </div>
 <div class="wiki">
@@ -64,10 +62,9 @@
                                 :action => 'destroy_comment',
                                 :id => @blog,
                                 :comment_id => comment.id,
-                                :project_id => @project,
                                 :global => true },
                               :confirm => l(:text_are_you_sure),
-                              :method => :post,
+                              :method => :delete,
                               :class => 'icon icon-del',
                               :title => l(:button_delete) %>
     </div>
@@ -80,7 +77,7 @@
 
 <% if authorize_for 'blogs', 'add_comment', true %>
 <p><%= toggle_link l(:label_comment_add), "add_comment_form", :focus => "comment_comments" %></p>
-<% form_tag({:action => 'add_comment', :id => @blog, :project_id => @project}, :id => "add_comment_form", :style => "display:none;") do %>
+<% form_tag({:action => 'add_comment', :id => @blog}, :id => "add_comment_form", :style => "display:none;") do %>
 <%= text_area 'comment', 'comments', :cols => 80, :rows => 15, :class => 'wiki-edit' %>
 <%= wikitoolbar_for 'comment_comments' %>
 <p><%= submit_tag l(:button_add) %></p>

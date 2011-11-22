@@ -26,7 +26,7 @@ class Blog < ActiveRecord::Base
   acts_as_event :type => 'blog-post',
                 :url => Proc.new {|o| {:controller => 'blogs', :action => 'show', :id => o.id, :project_id => o.project_id}}
 
-  acts_as_searchable :columns => ['title', 'summary', "#{table_name}.description"],
+  acts_as_searchable :columns => ['title', 'summary', "#{Blog.table_name}.description"],
                      # sort by id so that limited eager loading doesn't break with postgresql
                      #:order_column => :id,
                      :include => :project
@@ -45,10 +45,6 @@ class Blog < ActiveRecord::Base
 
   def attachments_visible?(user = User.current)
     true
-  end
-
-  def project
-    nil
   end
 
   def short_description()

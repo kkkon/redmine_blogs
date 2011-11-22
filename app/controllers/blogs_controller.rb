@@ -5,10 +5,10 @@ class BlogsController < ApplicationController
   include AttachmentsHelper
 
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
-  before_filter :find_user, :only => :index
+  before_filter :find_user, :only => [:index]
   before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag, :get_tag_list]
-  before_filter :find_project, :only => [:index, :preview]
-  before_filter :authorize, :except => :preview
+  before_filter :find_project, :only => [:index]
+  before_filter :authorize, :except => [:preview]
   accept_key_auth :index, :show_by_tag
 
   def index
@@ -61,7 +61,7 @@ class BlogsController < ApplicationController
       Attachment.attach_files(@blog, params[:attachments])
       flash[:notice] = l(:notice_successful_update)
     end
-    redirect_to :action => 'show', :id => @blog, :project_id => @project
+    redirect_to :action => 'show', :id => @blog
   end
 
   def add_comment
@@ -69,7 +69,7 @@ class BlogsController < ApplicationController
     @comment.author = User.current
     if @blog.comments << @comment
       flash[:notice] = l(:label_comment_added)
-      redirect_to :action => 'show', :id => @blog, :project_id => @project
+      redirect_to :action => 'show', :id => @blog
     else
       render :action => 'show'
     end
@@ -77,7 +77,7 @@ class BlogsController < ApplicationController
 
   def destroy_comment
     @blog.comments.find(params[:comment_id]).destroy
-    redirect_to :action => 'show', :id => @blog, :project_id => @project
+    redirect_to :action => 'show', :id => @blog
   end
 
   def destroy
@@ -101,6 +101,7 @@ private
 
   def find_blog
     @blog = Blog.find(params[:id])
+    @project = @blog.project
   rescue ActiveRecord::RecordNotFound
     render_404
   end

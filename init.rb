@@ -32,7 +32,7 @@ Redmine::Plugin.register :redmine_blogs do
   project_module :blogs do
     permission :manage_blogs, :blogs => [:new, :edit, :destroy_comment, :destroy]
     permission :comment_blogs, :blogs => :add_comment
-    permission :view_blogs, :blogs => [:index, :show, :show_by_tag, :history]
+    permission :view_blogs, :blogs => [:index, :show, :show_by_tag, :get_tag_list, :history]
   end
 
   menu :project_menu, :blogs, {:controller => 'blogs', :action => 'index'},
