@@ -39,6 +39,8 @@ Redmine::Plugin.register :redmine_blogs do
        :caption => 'Blogs', :after => :news, :param => :project_id
 
   activity_provider :blogs
+
+  Redmine::Search.register :blogs
 end
 
 class RedmineBlogsHookListener < Redmine::Hook::ViewListener
