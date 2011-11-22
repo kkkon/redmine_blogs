@@ -5,8 +5,8 @@ class BlogsController < ApplicationController
   include AttachmentsHelper
 
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
-  before_filter :find_user, :only => [:index]
-  before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :add_comment, :show_by_tag, :get_tag_list]
+  before_filter :find_user, :only => :index
+  before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag, :get_tag_list]
   before_filter :find_project, :only => [:index, :preview]
   before_filter :authorize, :except => :preview
   accept_key_auth :index, :show_by_tag

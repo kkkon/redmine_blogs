@@ -21,17 +21,15 @@ class Blog < ActiveRecord::Base
 
   acts_as_activity_provider :type => 'blogs',
                             :find_options => {:include => [:author, :project]},
-                            :timestamp => "#{Blog.table_name}.created_on",
-                            :author_key => "#{Blog.table_name}.author_id"
+                            :author_key => :author_id
 
-  acts_as_event :datetime => :created_on,
-                :url => Proc.new {|o| {:controller => 'blogs', :action => 'show', :id => o.id, :project_id => o.project_id}},
-                :type => 'blog-post'
+  acts_as_event :type => 'blog-post',
+                :url => Proc.new {|o| {:controller => 'blogs', :action => 'show', :id => o.id, :project_id => o.project_id}}
 
-  acts_as_searchable :columns => ['title', 'summary', 'description'],
+  acts_as_searchable :columns => ['title', 'summary', "#{table_name}.description"],
                      # sort by id so that limited eager loading doesn't break with postgresql
-                     :order_column => "id",
-                     :project_key => ""
+                     #:order_column => :id,
+                     :include => :project
 
   # returns latest blogs for projects visible by user
   def self.latest(user = User.current, count = 5)
