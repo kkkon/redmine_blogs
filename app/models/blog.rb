@@ -24,7 +24,7 @@ class Blog < ActiveRecord::Base
                             :author_key => :author_id
 
   acts_as_event :type => 'blog-post',
-                :url => Proc.new {|o| {:controller => 'blogs', :action => 'show', :id => o.id, :project_id => o.project_id}}
+                :url => Proc.new {|o| {:controller => 'blogs', :action => 'show', :id => o.id}}
 
   acts_as_searchable :columns => ['title', 'summary', "#{Blog.table_name}.description"],
                      # sort by id so that limited eager loading doesn't break with postgresql
