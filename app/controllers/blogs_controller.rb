@@ -9,7 +9,7 @@ class BlogsController < ApplicationController
   before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag]
   before_filter :find_project, :only => [:index]
   before_filter :authorize, :except => [:preview, :get_tag_list]
-  accept_key_auth :index, :show_by_tag
+  accept_rss_auth :index, :show_by_tag
 
   def index
     @blogs_pages, @blogs = paginate :blogs,
