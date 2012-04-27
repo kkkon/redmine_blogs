@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     blogs.connect 'blogs/:id', :action => 'show'
     blogs.connect 'blogs/:id/edit', :action => 'edit'
     blogs.connect 'blogs/:id/destroy', :action => 'destroy', :conditions => {:method => :post}
+    blogs.connect 'blogs/:id/add_comment', :action => 'add_comment'
     blogs.connect 'blogs/:id/comments/:comment_id', :action => 'destroy_comment', :conditions => {:method => :delete}
   end
 end
