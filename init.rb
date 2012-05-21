@@ -8,16 +8,14 @@ Dir[File.join(directory,'vendor','plugins','*')].each do |dir|
 end
 
 # Patches to the Redmine core.
-require 'dispatcher'
-
-Dispatcher.to_prepare :redmine_blogs do
+Rails.configuration.to_prepare do
   require_dependency 'comment'
   Comment.send(:include, RedmineBlogs::Patches::CommentPatch)
 
   require_dependency 'application_controller'
   ApplicationController.send(:include, RedmineBlogs::Patches::ApplicationControllerPatch)
 
-  require_dependency 'application_helper' 
+  require_dependency 'application_helper'
   ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
 
   require_dependency 'acts_as_taggable'
@@ -27,7 +25,7 @@ Redmine::Plugin.register :redmine_blogs do
   name 'Redmine Blogs plugin'
   author 'A. Chaika, Kyanh, Eric Davis'
   description 'Redmine Blog plugin'
-  version '0.2.0-edavis10'
+  version '0.3.0'
 
   project_module :blogs do
     permission :manage_blogs, :blogs => [:new, :edit, :destroy_comment, :destroy]

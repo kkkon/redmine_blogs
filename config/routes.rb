@@ -1,15 +1,13 @@
-ActionController::Routing::Routes.draw do |map|
-  map.with_options :controller => 'blogs' do |blogs|
-    blogs.connect 'projects/:project_id/blogs/new', :action => 'new'
-    blogs.connect 'projects/:project_id/blogs.:format', :action => 'index'
-    blogs.connect 'blogs/users/:id/:project_id', :action => 'index'
-    blogs.connect 'blogs/tags/:id/:project_id', :action => 'show_by_tag'
-    blogs.connect 'blogs/get_tag_list', :action => 'get_tag_list'
-    blogs.connect 'blogs/preview', :action => 'preview'
-    blogs.connect 'blogs/:id', :action => 'show'
-    blogs.connect 'blogs/:id/edit', :action => 'edit'
-    blogs.connect 'blogs/:id/destroy', :action => 'destroy', :conditions => {:method => :post}
-    blogs.connect 'blogs/:id/add_comment', :action => 'add_comment'
-    blogs.connect 'blogs/:id/comments/:comment_id', :action => 'destroy_comment', :conditions => {:method => :delete}
-  end
+RedmineApp::Application.routes.draw do
+  match 'projects/:project_id/blogs/new', :to => 'blogs#new'
+  match 'projects/:project_id/blogs.:format', :to => 'blogs#index'
+  match 'blogs/users/:id/:project_id', :to => 'blogs#index'
+  match 'blogs/tags/:id/:project_id', :to => 'blogs#show_by_tag'
+  match 'blogs/get_tag_list', :to => 'blogs#get_tag_list'
+  match 'blogs/preview', :to => 'blogs#preview'
+  match 'blogs/:id', :to => 'blogs#show'
+  match 'blogs/:id/edit', :to => 'blogs#edit'
+  match 'blogs/:id/destroy', :to => 'blogs#destroy', :via => :post
+  match 'blogs/:id/add_comment', :to => 'blogs#add_comment'
+  match 'blogs/:id/comments/:comment_id', :to => 'blogs#destroy_comment', :via => :delete
 end
