@@ -43,6 +43,6 @@ end
 
 class RedmineBlogsHookListener < Redmine::Hook::ViewListener
   render_on :view_layouts_base_html_head, :inline => "<%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_blogs' %>"
-end 
+end
 
 require 'redmine_blogs/hooks/view_account_left_middle_hook'
