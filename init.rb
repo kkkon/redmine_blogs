@@ -19,6 +19,7 @@ Redmine::Plugin.register :redmine_blogs do
   author 'A. Chaika, Kyanh, Eric Davis'
   description 'Redmine Blog plugin'
   version '0.3.0'
+  requires_redmine :version_or_higher => '2.0.0'
 
   project_module :blogs do
     permission :manage_blogs, {:blogs => [:new, :edit, :destroy_comment, :destroy]}
@@ -34,8 +35,8 @@ Redmine::Plugin.register :redmine_blogs do
   Redmine::Search.register :blogs
 end
 
-class RedmineBlogsHookListener < Redmine::Hook::ViewListener
-  render_on :view_layouts_base_html_head, :inline => "<%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_blogs' %>"
-end
+#class RedmineBlogsHookListener < Redmine::Hook::ViewListener
+#  render_on :view_layouts_base_html_head, :inline => "<%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_blogs' %>"
+#end
 
 require 'redmine_blogs/hooks/view_account_left_middle_hook'
