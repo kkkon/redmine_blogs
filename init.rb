@@ -1,12 +1,5 @@
 require 'redmine'
 
-Dir[File.join(directory,'vendor','plugins','*')].each do |dir|
-  path = File.join(dir, 'lib')
-  $LOAD_PATH << path
-  ActiveSupport::Dependencies.load_paths << path
-  ActiveSupport::Dependencies.load_once_paths.delete(path)
-end
-
 # Patches to the Redmine core.
 Rails.configuration.to_prepare do
   require_dependency 'comment'
@@ -18,7 +11,7 @@ Rails.configuration.to_prepare do
   require_dependency 'application_helper'
   ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
 
-  require_dependency 'acts_as_taggable'
+  require_dependency 'acts_as_taggable_on'
 end
 
 Redmine::Plugin.register :redmine_blogs do
@@ -28,9 +21,9 @@ Redmine::Plugin.register :redmine_blogs do
   version '0.3.0'
 
   project_module :blogs do
-    permission :manage_blogs, :blogs => [:new, :edit, :destroy_comment, :destroy]
-    permission :comment_blogs, :blogs => :add_comment
-    permission :view_blogs, :blogs => [:index, :show, :show_by_tag, :history]
+    permission :manage_blogs, {:blogs => [:new, :edit, :destroy_comment, :destroy]}
+    permission :comment_blogs, {:blogs => :add_comment}
+    permission :view_blogs, {:blogs => [:index, :show, :show_by_tag, :history]}
   end
 
   menu :project_menu, :blogs, {:controller => 'blogs', :action => 'index'},

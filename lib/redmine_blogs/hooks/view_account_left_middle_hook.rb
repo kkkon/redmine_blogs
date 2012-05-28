@@ -9,9 +9,8 @@ module RedmineBlogs
                             :conditions => ["author_id = ? and project_id = ?", user.id, @project.id])
 
           return context[:controller].send(:render_to_string, {
-                                             :partial => 'blogs/user_page',
-                                             :locals => {:blogs => @blogs, :user => user, :project_id => @project}
-                                           })
+                                           :partial => 'blogs/user_page',
+                                           :locals => {:blogs => @blogs, :user => user, :project_id => @project}})
         else
           return ""
         end
