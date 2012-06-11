@@ -22,9 +22,9 @@ Redmine::Plugin.register :redmine_blogs do
   requires_redmine :version_or_higher => '2.0.0'
 
   project_module :blogs do
-    permission :manage_blogs, {:blogs => [:new, :edit, :destroy_comment, :destroy]}
+    permission :manage_blogs, {:blogs => [:new, :edit, :destroy_comment, :destroy]}, :require => :member
     permission :comment_blogs, {:blogs => :add_comment}
-    permission :view_blogs, {:blogs => [:index, :show, :show_by_tag, :history]}
+    permission :view_blogs, {:blogs => [:index, :preview, :show, :show_by_tag, :history]}
   end
 
   menu :project_menu, :blogs, {:controller => 'blogs', :action => 'index'},

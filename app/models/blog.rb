@@ -14,10 +14,7 @@ class Blog < ActiveRecord::Base
   validates_length_of :title, :maximum => 255
   validates_length_of :summary, :maximum => 255
 
-  attr_accessible :summary
-  attr_accessible :description
-  attr_accessible :title
-  attr_accessible :tag_list
+  attr_accessible :summary, :description, :title, :tag_list
 
   acts_as_activity_provider :type => 'blogs',
                             :find_options => {:include => [:author, :project]},

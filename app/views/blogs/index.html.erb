@@ -30,7 +30,7 @@
 <h2><%=l(:label_blog_plural)%></h2>
 
 <div class="splitcontentleft25">
-  <% @blog_users = Blog.find(:all, :conditions => ["project_id = ?", @project.id]).collect{|b| b.author}.uniq.sort %>
+  <% @blog_users = Blog.find(:all, :conditions => ["project_id = ?", @project]).collect{|b| b.author}.uniq.sort %>
   <% if @blog_users.any? %>
     <div class="box">
       <h3 class="icon22 icon22-users"><%=l(:label_users_blogs)%></h3>
@@ -47,11 +47,7 @@
   <% end %>
   <div class="box">
     <h3 class="icon22 icon22-tags"><%=l(:label_tag_cloud)%></h3>
-    <div class="tags">
-      <% tag_cloud Blog.tag_counts, %w(css1 css2 css3 css4) do |tag, css_class| %>
-        <%= link_to tag.name, { :action => :show_by_tag, :id => tag.name, :project_id => @project }, :class => css_class %>
-      <% end %>
-    </div>
+    <%= render :partial => 'tag_cloud' %>
   </div>
 </div>
 

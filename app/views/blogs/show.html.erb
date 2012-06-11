@@ -40,11 +40,7 @@
 <% end %>
 <p><em><% unless @blog.summary.blank? %><%=h @blog.summary %><br /><% end %>
 <span class="author"><%= authoring @blog.created_on, @blog.author %></span></em></p>
-<div class="tags">
-<% tag_cloud @blog.tag_counts, %w(css1 css2 css3 css4) do |tag, css_class| %>
-    <%= link_to tag.name, { :action => :show_by_tag, :id => tag.name, :project_id => @project }, :class => css_class %>
-<% end %>
-</div>
+<%= render :partial => 'tag_cloud' %>
 <div class="wiki">
 <%= textilizable(@blog, :full_description) %>
 </div>
@@ -70,7 +66,7 @@
     </div>
     <h4><%= authoring comment.created_on, comment.author %></h4>
       <div class="wiki">
-    <%= textilizable(comment, :comments) %>
+        <%= textilizable(comment, :comments) %>
       </div>
 <% end if @comments.any? %>
 </div>

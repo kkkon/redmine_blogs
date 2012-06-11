@@ -6,7 +6,7 @@ class BlogsController < ApplicationController
 
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_user, :only => [:index]
-  before_filter :find_optional_project, :only => [:show, :new, :edit, :destroy, :destroy_comment, :add_comment, :show_by_tag]
+  before_filter :find_optional_project, :except => [:index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_project, :only => [:index]
   before_filter :authorize, :except => [:preview, :get_tag_list]
   accept_rss_auth :index, :show_by_tag
@@ -14,7 +14,7 @@ class BlogsController < ApplicationController
   def index
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => (@user ? ["author_id = ? and project_id = ?", @user.id, @project.id] : ["project_id = ?", @project.id]),
+      :conditions => (@user ? ["author_id = ? and project_id = ?", @user, @project] : ["project_id = ?", @project]),
       :include => [:author, :project],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
@@ -27,7 +27,7 @@ class BlogsController < ApplicationController
   def show_by_tag
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => ["#{Tag.table_name}.name = ? and project_id = ?", params[:id], @project.id],
+      :conditions => ["#{Tag.table_name}.name = ?", params[:id]],
       :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
@@ -42,16 +42,13 @@ class BlogsController < ApplicationController
   end
 
   def new
-    @blog = Blog.new
+    @blog = Blog.new(params[:blog])
     @blog.author = User.current
     @blog.project = @project
-    if request.post?
-      @blog.attributes = params[:blog]
-      if @blog.save
-        Attachment.attach_files(@blog, params[:attachments])
-        flash[:notice] = l(:notice_successful_create)
-        redirect_to :action => 'index', :project_id => @project
-      end
+    if request.post? and @blog.save
+      Attachment.attach_files(@blog, params[:attachments])
+      flash[:notice] = l(:notice_successful_create)
+      redirect_to :action => 'index', :project_id => @project
     end
   end
 
@@ -94,7 +91,7 @@ class BlogsController < ApplicationController
   end
 
   def get_tag_list
-    render :text => Tag.find(:all) * ","
+    render :text => Tag.all * ","
   end
 
 private
