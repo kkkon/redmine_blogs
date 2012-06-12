@@ -5,13 +5,13 @@ Rails.configuration.to_prepare do
   require_dependency 'comment'
   Comment.send(:include, RedmineBlogs::Patches::CommentPatch)
 
-  require_dependency 'application_controller'
-  ApplicationController.send(:include, RedmineBlogs::Patches::ApplicationControllerPatch)
+#  require_dependency 'application_controller'
+#  ApplicationController.send(:include, RedmineBlogs::Patches::ApplicationControllerPatch)
 
   require_dependency 'application_helper'
   ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
 
-  require_dependency 'acts_as_taggable_on'
+  require_dependency 'acts-as-taggable-on'
 end
 
 Redmine::Plugin.register :redmine_blogs do

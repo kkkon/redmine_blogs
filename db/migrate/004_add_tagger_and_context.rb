@@ -1,6 +1,7 @@
 class AddTaggerAndContext < ActiveRecord::Migration
   def self.up
     add_column :taggings, :context, :string
+
     add_column :taggings, :tagger_id, :integer
     add_column :taggings, :tagger_type, :string
 

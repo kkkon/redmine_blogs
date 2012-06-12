@@ -3,7 +3,7 @@
 <% else %>
 <div id="blogs">
 <% blogs.each do |blog| %>
-  <% div_for(blog) do %>
+  <%= div_for(blog) do %>
     <h3><%= link_to h(blog.title), :controller => 'blogs', :action => 'show', :id => blog %>
     <%= "(#{blog.comments_count} #{l(:label_comment, blog.comments_count).downcase})" if blog.comments_count > 0 %></h3>
     <p class="author"><%= authoring blog.created_on, blog.author %></p>

@@ -5,7 +5,7 @@ module RedmineBlogs
 
       included do # :nodoc:    
         class_eval do
-          include TagsHelper
+          #include TagsHelper
           unloadable
           alias_method_chain :link_to_if_authorized, :global
           alias_method_chain :authorize_for, :global

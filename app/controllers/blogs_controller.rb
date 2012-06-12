@@ -27,7 +27,7 @@ class BlogsController < ApplicationController
   def show_by_tag
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => ["#{Tag.table_name}.name = ?", params[:id]],
+      :conditions => ["tags.name = ?", params[:id]],
       :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
@@ -91,7 +91,7 @@ class BlogsController < ApplicationController
   end
 
   def get_tag_list
-    render :text => Tag.all * ","
+    render :text => Blog.tag_counts.reduce { |l, tag| "#{l},#{tag.name}" }
   end
 
 private
