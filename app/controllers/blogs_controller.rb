@@ -28,9 +28,10 @@ class BlogsController < ApplicationController
   end
 
   def show_by_tag
+    @tag = params[:id]
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => ["tags.name = ?", params[:id]],
+      :conditions => ["tags.name = ?", @tag],
       :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|

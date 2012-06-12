@@ -1,3 +1,4 @@
+<% if @project %>
 <div class="contextual">
 <%= link_to_if_authorized l(:label_post_new),
                           { :controller => 'blogs',
@@ -9,8 +10,9 @@
 </div>
 
 <div id="add-blog" style="display:none;">
-<%= render :partial => 'post' %>
+  <%= render :partial => 'post' %>
 </div>
+<% end %>
 
 <h2><%=l(:label_blog_plural)%></h2>
 
@@ -43,8 +45,8 @@
 <% other_formats_links do |f| %>
   <%= f.link_to 'Atom', :url => { :action => 'index', :project_id => @project, :key => User.current.rss_key } %>
   <%= f.link_to 'RSS', :url => { :action => 'index', :project_id => @project, :key => User.current.rss_key } %>
-<% end %>
+<% end if @project %>
 
 </div>
 
-<% html_title(l(:label_blog_plural)) -%>
+<% html_title(@tag ? @tag : l(:label_blog_plural)) -%>
