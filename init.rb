@@ -5,9 +5,6 @@ Rails.configuration.to_prepare do
   require_dependency 'comment'
   Comment.send(:include, RedmineBlogs::Patches::CommentPatch)
 
-#  require_dependency 'application_controller'
-#  ApplicationController.send(:include, RedmineBlogs::Patches::ApplicationControllerPatch)
-
   require_dependency 'application_helper'
   ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
 
@@ -34,9 +31,5 @@ Redmine::Plugin.register :redmine_blogs do
 
   Redmine::Search.register :blogs
 end
-
-#class RedmineBlogsHookListener < Redmine::Hook::ViewListener
-#  render_on :view_layouts_base_html_head, :inline => "<%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_blogs' %>"
-#end
 
 require 'redmine_blogs/hooks/view_account_left_middle_hook'
