@@ -7,7 +7,7 @@ RedmineApp::Application.routes.draw do
     match 'blogs/get_tag_list', :to => :get_tag_list
     match 'blogs/preview', :to => :preview
     match 'blogs/:id', :to => :show
-    match 'blogs/:id/:action', :via => :post
+    match 'blogs/:id/:action', :via => [:get, :post, :put]
     match 'blogs/:id/comments/:comment_id', :to => :destroy_comment, :via => :delete
   end
 end
