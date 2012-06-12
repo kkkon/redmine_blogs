@@ -14,7 +14,7 @@
                                     :html => { :id => 'blog-form', 
                                                :class => nil,
                                                :multipart => true } do |f| %>
-<%= render :partial => 'blogs/form', :locals => { :f => f } %>
+<%= render :partial => 'form', :locals => { :f => f } %>
 <%= submit_tag l(:button_create) %>
 <%= link_to_remote l(:label_preview),
                    { :url => { :controller => 'blogs', :action => 'preview' },
@@ -61,10 +61,5 @@
 <% end %>
 
 </div>
-
-<% content_for :header_tags do %>
-  <%= stylesheet_link_tag 'stylesheet', :plugin => 'redmine_blogs' %>
-  <%= stylesheet_link_tag 'scm' %>
-<% end %>
 
 <% html_title(l(:label_blog_plural)) -%>

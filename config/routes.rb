@@ -2,7 +2,7 @@ RedmineApp::Application.routes.draw do
   controller :blogs do
     match 'projects/:project_id/blogs/new', :to => :new
     match 'projects/:project_id/blogs(.:format)', :to => :index
-    #match 'blogs/users/:id(/:project_id)', :to => :index
+    #match 'blogs/users/:id/:project_id', :to => :index
     match 'blogs/tags/:id', :to => :show_by_tag
     match 'blogs/get_tag_list', :to => :get_tag_list
     match 'blogs/preview', :to => :preview

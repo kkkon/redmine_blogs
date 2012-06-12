@@ -1,11 +1,14 @@
 class AddTaggerAndContext < ActiveRecord::Migration
+  require_dependency 'acts_as_taggable_on/tagging'
+
   def self.up
     add_column :taggings, :context, :string
-
     add_column :taggings, :tagger_id, :integer
     add_column :taggings, :tagger_type, :string
 
     add_index :taggings, [:taggable_id, :taggable_type, :context]
+
+    ActsAsTaggableOn::Tagging.update_all("context = 'tags'")
   end
 
   def self.down

@@ -4,11 +4,14 @@ class BlogsController < ApplicationController
   helper :attachments
   include AttachmentsHelper
 
+  layout 'header', :only => [:index, :new, :show, :show_by_tag]
+
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_user, :only => [:index]
   before_filter :find_optional_project, :except => [:index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_project, :only => [:index]
-  before_filter :authorize, :except => [:preview, :get_tag_list]
+  before_filter :authorize, :except => [:preview, :get_tag_list, :show_by_tag]
+  before_filter :require_login, :only => [:show_by_tag]
   accept_rss_auth :index, :show_by_tag
 
   def index
