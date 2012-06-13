@@ -40,7 +40,7 @@
 <% end %>
 <p><em><% unless @blog.summary.blank? %><%=h @blog.summary %><br /><% end %>
 <span class="author"><%= authoring @blog.created_on, @blog.author %></span></em></p>
-<%= render :partial => 'tag_cloud' %>
+<%= render :partial => 'tag_cloud', :locals => {:tag_counts => @blog.tag_counts} %>
 <div class="wiki">
 <%= textilizable(@blog, :full_description) %>
 </div>

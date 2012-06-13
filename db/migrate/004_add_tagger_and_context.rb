@@ -8,7 +8,7 @@ class AddTaggerAndContext < ActiveRecord::Migration
 
     add_index :taggings, [:taggable_id, :taggable_type, :context]
 
-    ActsAsTaggableOn::Tagging.update_all("context = 'tags'")
+    ActsAsTaggableOn::Tagging.update_all("context = 'tags'", "context = NULL")
   end
 
   def self.down

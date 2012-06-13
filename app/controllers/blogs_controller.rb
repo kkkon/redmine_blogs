@@ -8,17 +8,19 @@ class BlogsController < ApplicationController
 
   before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
   before_filter :find_user, :only => [:index]
-  before_filter :find_optional_project, :except => [:index, :preview, :show_by_tag, :get_tag_list]
+  before_filter :find_tag, :only => [:index, :show_by_tag]
+  before_filter :find_optional_project, :except => [:index, :preview, :get_tag_list]
   before_filter :find_project, :only => [:index]
-  before_filter :authorize, :except => [:preview, :get_tag_list, :show_by_tag]
-  before_filter :require_login, :only => [:show_by_tag]
+  before_filter :authorize, :except => [:preview, :get_tag_list]
   accept_rss_auth :index, :show_by_tag
 
   def index
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => (@user ? ["author_id = ? and project_id = ?", @user, @project] : ["project_id = ?", @project]),
-      :include => [:author, :project],
+      :conditions => (@user ? ["author_id = ? and project_id = ?", @user, @project]
+                      : @tag ? ["tags.name = ? and project_id = ?", @tag, @project]
+                      : ["project_id = ?", @project]),
+      :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
       format.html { render :layout => false if request.xhr? }
@@ -28,10 +30,9 @@ class BlogsController < ApplicationController
   end
 
   def show_by_tag
-    @tag = params[:id]
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
-      :conditions => ["tags.name = ?", @tag],
+      :conditions => (@project ? ["tags.name = ? and project_id = ?", @tag, @project] : ["tags.name = ?", @tag]),
       :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
@@ -108,9 +109,13 @@ private
   end
 
   def find_user
-    @user = User.find(params[:id]) if params[:id]
+    @user = User.find(params[:author]) if params[:author]
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def find_tag
+    @tag = params[:tag] if params[:tag]
   end
 
   def find_project
