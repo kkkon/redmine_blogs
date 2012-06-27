@@ -1,4 +1,7 @@
 require 'redmine'
+require 'acts-as-taggable-on'
+
+require 'view_account_left_middle_hook'
 
 # Patches to the Redmine core.
 Rails.configuration.to_prepare do
@@ -7,8 +10,6 @@ Rails.configuration.to_prepare do
 
   require_dependency 'application_helper'
   ApplicationHelper.send(:include, RedmineBlogs::Patches::ApplicationHelperGlobalPatch)
-
-  require_dependency 'acts-as-taggable-on'
 end
 
 Redmine::Plugin.register :redmine_blogs do
@@ -31,5 +32,3 @@ Redmine::Plugin.register :redmine_blogs do
 
   Redmine::Search.register :blogs
 end
-
-require 'redmine_blogs/hooks/view_account_left_middle_hook'
