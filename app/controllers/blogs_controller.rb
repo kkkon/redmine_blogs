@@ -4,17 +4,17 @@ class BlogsController < ApplicationController
   helper :attachments
   include AttachmentsHelper
 
-  layout 'header', :only => [:index, :new, :show, :show_by_tag]
+  layout 'header', :only => [:index, :new, :show]
 
-  before_filter :find_blog, :except => [:new, :index, :preview, :show_by_tag, :get_tag_list]
+  before_filter :find_blog, :except => [:new, :index, :preview, :get_tag_list]
   before_filter :find_user, :only => [:index]
-  before_filter :find_tag, :only => [:index, :show_by_tag]
   before_filter :find_optional_project, :except => [:index, :preview, :get_tag_list]
   before_filter :find_project, :only => [:index]
   before_filter :authorize, :except => [:preview, :get_tag_list]
-  accept_rss_auth :index, :show_by_tag
+  accept_rss_auth :index
 
   def index
+    @tag = params[:tag] if params[:tag]
     @blogs_pages, @blogs = paginate :blogs,
       :per_page => 10,
       :conditions => (@user ? ["author_id = ? and project_id = ?", @user, @project]
@@ -23,21 +23,9 @@ class BlogsController < ApplicationController
       :include => [:author, :project, :tags],
       :order => "#{Blog.table_name}.created_on DESC"
     respond_to do |format|
-      format.html { render :layout => false if request.xhr? }
+      format.html { render :layout => !request.xhr? }
       format.atom { render_feed(@blogs, :title => "#{Setting.app_title}: Blogs") }
       format.rss  { render_feed(@blogs, :title => "#{Setting.app_title}: Blogs", :format => 'rss' ) }
-    end
-  end
-
-  def show_by_tag
-    @blogs_pages, @blogs = paginate :blogs,
-      :per_page => 10,
-      :conditions => (@project ? ["tags.name = ? and project_id = ?", @tag, @project] : ["tags.name = ?", @tag]),
-      :include => [:author, :project, :tags],
-      :order => "#{Blog.table_name}.created_on DESC"
-    respond_to do |format|
-      format.html { render :action => 'index', :layout => !request.xhr? }
-      format.atom { render_feed(@blogs, :title => "#{Setting.app_title}: Blogs") }
     end
   end
 
@@ -112,10 +100,6 @@ private
     @user = User.find(params[:author]) if params[:author]
   rescue ActiveRecord::RecordNotFound
     render_404
-  end
-
-  def find_tag
-    @tag = params[:tag] if params[:tag]
   end
 
   def find_project
