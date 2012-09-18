@@ -27,12 +27,7 @@
                                                :multipart => true } do |f| %>
 <%= render :partial => 'form', :locals => { :f => f } %>
 <%= submit_tag l(:button_save) %>
-<%= link_to_remote l(:label_preview),
-                   { :url => { :controller => 'blogs', :action => 'preview', :id => @blog },
-                     :method => 'post',
-                     :update => 'preview',
-                     :with => "Form.serialize('blog-form')"
-                   }, :accesskey => accesskey(:preview) %> |
+<%= preview_link({ :controller => 'blogs', :action => 'preview', :id => @blog }, 'blog-form') %>
 <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("edit-blog")' %>
 <% end %>
 <div id="preview" class="wiki"></div>
