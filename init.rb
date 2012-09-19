@@ -18,7 +18,7 @@ Redmine::Plugin.register :redmine_blogs do
   name 'Redmine Blogs plugin'
   author 'A. Chaika, Kyanh, Eric Davis'
   description 'Redmine Blog plugin'
-  version '0.3.0'
+  version '0.4.0'
   requires_redmine :version_or_higher => '2.1.0'
 
   project_module :blogs do
