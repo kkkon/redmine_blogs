@@ -46,47 +46,19 @@
 
     options = $.extend({
       loadinfo: 'loadtag.php',
-            minlength: 3,
-            maxlength: 25,
-            maxitem:10
+      minlength: 3,
+      maxlength: 25,
+      maxitem:10
     },options);
 
-
-
-    function getCaretPosition (ctrl) {
-      var CaretPos = 0;
-      if (document.selection) {
-        ctrl.focus ();
-        var Sel = document.selection.createRange ();
-        Sel.moveStart ('character', -ctrl.value.length);
-        CaretPos = Sel.text.length;
-      } else if (ctrl.selectionStart || ctrl.selectionStart == '0') {
-        CaretPos = ctrl.selectionStart;
-      }
-      return (CaretPos);
-    }
-
-    function setCaretPosition(ctrl, pos){
-
-      if (ctrl.setSelectionRange) {
-        ctrl.focus();
-        ctrl.setSelectionRange(pos,pos);
-      } else if (ctrl.createTextRange) {
-        var range = ctrl.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', pos);
-        range.moveStart('character', pos);
-        range.select();
-      }
-    }
-
-
     function getCaretPos(e){
-      e.focus();
+      $(e).focus();
       if (e.selectionStart) {
         return e.selectionStart;
       } else if (document.selection){
-        return getCaretPosition (e);
+        var Sel = document.selection.createRange ();
+        Sel.moveStart ('character', -e.value.length);
+        return Sel.text.length;
       }
 
       return 0;
@@ -137,13 +109,12 @@
       return res;
     }
 
-    /* тут самое страшное;) */
     function go_tag_load(e,o,jo){
 
       if ( (e.keyCode==40)||(e.keyCode==38)||(e.keyCode==13) ){ return false; }
       selqt=0; it=0;
       var tag_text = $(o).val();
-      // опрредиляем мясо от костей
+
       var text_search = searchtext(tag_text,getCaretPos(o));
       text_search = text_search.toLocaleLowerCase();
       var tag_ex =tagtext.split(',');
@@ -151,9 +122,9 @@
         if (tagtext!=''){
           if(tagtext.indexOf(text_search) + 1) {
             var tag_str = '';
-            //рисуем форму выбора  тегов
+
             $(".tag_add_input_form").remove();
-            var formtagselect = $('<div class="tag_add_input_form" name="tag_add_input_form_name"></div>').css('opacity','0.9');
+            var formtagselect = $('<div class="tag_add_input_form" name="tag_add_input_form_name"></div>').css('opacity','0.9').width(elem.offsetWidth);
             $(o).before(formtagselect);
             it=0;
             for (var key in tag_ex) {
@@ -166,52 +137,50 @@
               }
             }
 
-
-
-            /* по клику делаем замену */
-
             $(".tag_add_input_form li").click(function(){
-              var seltext = this.text();
+              var seltext = $(this).text();
 
               $(o).val(substr_replace(tagstart,tagend,$(o).val(),seltext));
               $(".tag_add_input_form").remove(); selqt=0; it=0;
             });
-
-
-
 
           }else{ $(".tag_add_input_form").remove(); selqt=0; it=0; }
         }
       } else { $(".tag_add_input_form").remove(); selqt=0; it=0; }
     }
 
+    function remove_tag_list() {
+      if (($(this).attr('name')=="tag_add_input_form_name")){
+        return false;
+      }else{
+        $(".tag_add_input_form").remove(); selqt=0; it=0;
+        lastselectrestag = '';
+      }
+    }
+
     function selectrestag(e,o,jo){
       if ( !$('.tag_add_input_form').length ){return false;}
       if (e.keyCode==40){
         selqt++;
-        if (selqt==(it+1)){ selqt=1; }
-      }
-      if (e.keyCode==38){
+        if (selqt>it){ selqt=1; }
+      } else if (e.keyCode==38){
         selqt--;
-        if (selqt==-1){ selqt=it; }
-        if (selqt==0){selqt=it;}
-      }
-      if ((e.keyCode==13) && (lastselectrestag!='')){
+        if (selqt<1){ selqt=it; }
+      } else if ((e.keyCode==13) && (lastselectrestag!='')){
         $(o).val(substr_replace(tagstart,tagend,$(o).val(),$(lastselectrestag).text()));
-        $(".tag_add_input_form").remove(); selqt=0; it=0; return false;
+        $(".tag_add_input_form").remove(); selqt=0; it=0;
+        return false;
       }
-      $("#tagselid_"+selqt).addClass('tag_add_input_form_sel');
       if (lastselectrestag!=''){
         $(lastselectrestag).removeClass('tag_add_input_form_sel');
       }
+      $("#tagselid_"+selqt).addClass('tag_add_input_form_sel');
       lastselectrestag = "#tagselid_"+selqt;
       return false;
     }
-    $.get(options.loadinfo,function(data){
-      if (tagtext==''){
-        tagtext = data.toLocaleLowerCase();
-      }
-    });
+
+    $.get(options.loadinfo,function(data){ if (tagtext==''){ tagtext = data.toLocaleLowerCase(); } });
+
     var fs = true;
     this.attr("autocomplete",'off')
       .blur(function(){ fs=true; })
@@ -219,17 +188,10 @@
       .keyup(function(e){go_tag_load(e,elem,options); return false;})
       .keydown(function(e){if ((e.keyCode==40)||(e.keyCode==38)||(e.keyCode==13)){ selectrestag(e,elem,options); return false;}});
 
-
-    /* хак запрета отправки формы из input */
     $('form').submit(function(){ return fs; });
 
-    $("*",document.body).click(function(){
-      if ( ($(this).attr('type')=='text') || ($(this).attr('name')=="tag_add_input_form_name")){
-        return false;
-      }else{
-        $(".tag_add_input_form").remove(); selqt=0; it=0;
-      }
-    });
+    $("*",document.body).click(function(){ return remove_tag_list(); });
+    $("*",document.body).focus(function(){ return remove_tag_list(); });
 
   };
 } (jQuery));
