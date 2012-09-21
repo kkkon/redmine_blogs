@@ -160,13 +160,13 @@
 
     function selectrestag(e,o,jo){
       if ( !$('.tag_add_input_form').length ){return false;}
-      if (e.keyCode==40){
+      if (e.keyCode==40){ // down-arrow key
         selqt++;
         if (selqt>it){ selqt=1; }
-      } else if (e.keyCode==38){
+      } else if (e.keyCode==38){ // up-arrow key
         selqt--;
         if (selqt<1){ selqt=it; }
-      } else if ((e.keyCode==13) && (lastselectrestag!='')){
+      } else if ((e.keyCode==13) && (lastselectrestag!='')){ // enter key
         $(o).val(substr_replace(tagstart,tagend,$(o).val(),$(lastselectrestag).text()));
         $(".tag_add_input_form").remove(); selqt=0; it=0;
         return false;
@@ -181,6 +181,8 @@
 
     $.get(options.loadinfo,function(data){ if (tagtext==''){ tagtext = data.toLocaleLowerCase(); } });
 
+    $("*",document.body).click(remove_tag_list).focus(remove_tag_list);
+
     var fs = true;
     this.attr("autocomplete",'off')
       .blur(function(){ fs=true; })
@@ -189,9 +191,6 @@
       .keydown(function(e){if ((e.keyCode==40)||(e.keyCode==38)||(e.keyCode==13)){ selectrestag(e,elem,options); return false;}});
 
     $('form').submit(function(){ return fs; });
-
-    $("*",document.body).click(function(){ return remove_tag_list(); });
-    $("*",document.body).focus(function(){ return remove_tag_list(); });
 
   };
 } (jQuery));
