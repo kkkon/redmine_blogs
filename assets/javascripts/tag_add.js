@@ -64,14 +64,8 @@
       return 0;
     }
 
-    function tagtrim ( str, charlist ) {
-      charlist = !charlist ? ' \s\xA0' : charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\$1');
-      var re = new RegExp('^[' + charlist + ']+|[' + charlist + ']+$', 'g');
-      return str.replace(re, '');
-    }
-
     function substr_replace(s,e,str,sbstr){
-      sbstr=tagtrim(sbstr);
+      sbstr=$.trim(sbstr);
       return str.substr(0,s)+sbstr+str.substr((s+e),(str.length-(s+e)));
     }
 
@@ -131,7 +125,7 @@
               var val = tag_ex [key];
               if (key == 'each') break;
               if ((val.indexOf(text_search) + 1) && ( ((jo.maxitem-1)>=it)||(jo.maxitem==0) )) {   it++;
-                var item  = $('<li id="tagselid_'+it+'">'+tagtrim(val.split(text_search).join('<b>'+text_search+'</b>'))+'</li>');
+                var item  = $('<li id="tagselid_'+it+'">'+$.trim(val.split(text_search).join('<b>'+text_search+'</b>'))+'</li>');
                 $(item).appendTo(formtagselect);
 
               }
