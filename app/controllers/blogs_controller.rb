@@ -46,7 +46,7 @@ class BlogsController < ApplicationController
   end
 
   def edit
-    render_403 if User.current != @blog.author
+    return render_403 if User.current != @blog.author
     if request.post? and @blog.update_attributes(params[:blog])
       Attachment.attach_files(@blog, params[:attachments])
       flash[:notice] = l(:notice_successful_update)
@@ -58,7 +58,6 @@ class BlogsController < ApplicationController
     @comment = Comment.new(params[:comment])
     @comment.author = User.current
     if @blog.comments << @comment
-      flash[:notice] = l(:label_comment_added)
       redirect_to :action => 'show', :id => @blog
     else
       render :action => 'show'
@@ -71,8 +70,10 @@ class BlogsController < ApplicationController
   end
 
   def destroy
-    render_403 if User.current != @blog.author
-    @blog.destroy
+    return render_403 if User.current != @blog.author
+    if @blog.destroy
+      flash[:notice] = l(:notice_successful_delete)
+    end
     redirect_to :action => 'index', :project_id => @project
   end
 
