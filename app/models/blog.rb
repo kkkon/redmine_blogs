@@ -36,6 +36,10 @@ class Blog < ActiveRecord::Base
          :order => "#{Blog.table_name}.created_on DESC")
   end
 
+  def editable_by?(user = User.current)
+    user == author && user.allowed_to?(:manage_blogs, project)
+  end
+
   def attachments_deletable?(user = User.current)
     true
   end
