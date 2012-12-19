@@ -1,4 +1,4 @@
-<h2><%=h @blog.title %></h2>
+<h2><%= @blog.title %></h2>
 
 <% if @blog.editable_by?(User.current) %>
 <div class="contextual">
@@ -29,7 +29,7 @@
 <div id="preview" class="wiki"></div>
 </div>
 <% end %>
-<p><em><% unless @blog.summary.blank? %><%=h @blog.summary %><br /><% end %>
+<p><em><% unless @blog.summary.blank? %><%= @blog.summary %><br /><% end %>
 <span class="author"><%= authoring @blog.created_on, @blog.author %></span></em></p>
 <%= render partial: 'tag_cloud', locals: {tag_counts: @blog.tag_counts} %>
 <div class="wiki">
