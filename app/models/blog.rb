@@ -37,7 +37,7 @@ class Blog < ActiveRecord::Base
   end
 
   def editable_by?(user = User.current)
-    user == author && user.allowed_to?(:manage_blogs, project)
+    user == author && user.allowed_to?(:manage_blogs, project, global: true)
   end
 
   def attachments_deletable?(user = User.current)

@@ -1,10 +1,9 @@
-<% if User.current.allowed_to?(:manage_blogs, @project) %>
+<% if User.current.allowed_to?(:manage_blogs, @project, global: true) %>
 <div class="contextual">
 <%= link_to l(:label_post_new),
             { controller: 'blogs',
               action: 'new',
-              project_id: @project,
-              global: true },
+              project_id: @project },
             class: 'icon icon-add',
             onclick: '$("#add-blog").show(); return false;' %>
 </div>

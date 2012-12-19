@@ -9,8 +9,7 @@
 <%= link_to l(:button_delete),
             { controller: 'blogs',
               action: 'destroy',
-              id: @blog,
-              global: true },
+              id: @blog },
             confirm: l(:text_are_you_sure),
             method: :post,
             class: 'icon icon-del' %>
@@ -19,8 +18,8 @@
 <div id="edit-blog" style="display:none;">
 <%= labelled_form_for :blog, @blog, url: { action: "edit", id: @blog },
                                     html: { id: 'blog-form', 
-                                               class: nil,
-                                               multipart: true } do |f| %>
+                                            class: nil,
+                                            multipart: true } do |f| %>
 <%= render partial: 'form', locals: { f: f } %>
 <%= submit_tag l(:button_save) %>
 <%= preview_link({ controller: 'blogs', action: 'preview', id: @blog }, 'blog-form') %>
