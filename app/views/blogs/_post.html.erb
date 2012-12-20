@@ -8,7 +8,7 @@
 <%= submit_tag l(:button_create) %>
 <%= preview_link({ controller: 'blogs', action: 'preview', project_id: @project }, 'blog-form') %>
 <% if inline %>
-<%= link_to l(:button_cancel), "#", onclick: '$("#add-blog").hide();' %>
+| <%= link_to l(:button_cancel), "#", onclick: '$("#add-blog").hide();' %>
 <% end %>
 <% end %>
 <div id="preview" class="wiki"></div>

@@ -23,7 +23,7 @@
 <%= render partial: 'form', locals: { f: f } %>
 <%= submit_tag l(:button_save) %>
 <%= preview_link({ controller: 'blogs', action: 'preview', id: @blog }, 'blog-form') %>
-<%= link_to l(:button_cancel), "#", onclick: '$("#edit-blog").hide();' %>
+| <%= link_to l(:button_cancel), "#", onclick: '$("#edit-blog").hide();' %>
 <% end %>
 
 <div id="preview" class="wiki"></div>
