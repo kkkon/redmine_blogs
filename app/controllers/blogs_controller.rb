@@ -85,7 +85,7 @@ class BlogsController < ApplicationController
   end
 
   def get_tag_list
-    render text: Blog.tag_counts.reduce { |l, tag| "#{l},#{tag.name}" }
+    render text: Blog.tag_counts.join(',')
   end
 
 private
