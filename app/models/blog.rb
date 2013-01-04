@@ -31,7 +31,7 @@ class Blog < ActiveRecord::Base
   # returns latest blogs for projects visible by user
   def self.latest(user = User.current, count = 5)
     find(:all, :limit => count,
-         :conditions => Project.allowed_to_condition(user, :view_news),
+         :conditions => Project.allowed_to_condition(user, :view_blogs),
          :include => [:author, :project],
          :order => "#{Blog.table_name}.created_on DESC")
   end
