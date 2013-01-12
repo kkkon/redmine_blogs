@@ -3,6 +3,7 @@
 Blog plugin for Redmine. Just like News :)
 
 Author: KyAnh <xkyanh@gmail.com>
+Contributor: KK.Kon
 
 == Features
 
@@ -20,8 +21,11 @@ A copy of the plugin can be downloaded from {GitHub}[http://github.com/edavis10/
 == Installation and Setup
 
 1. Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins 
-2. Run the plugin migrations +rake db:migrate_plugins+
+2. Run the plugin migrations +rake redmine:plugins:migrate NAME=redmine_blogs+
 3. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
+
+Please setup other plugin first, this plugin migration at the last.
+This plugin custimized by KK.Kon support non-conflict setup(plugins:migrate), if other plugin use `acts-as-taggable-on`. e.g) KnowledgeBase plugin
 
 == Usage
 
@@ -31,3 +35,7 @@ TODO: Add usage
 
 If you need help you can contact the maintainer.
 
+== Tested Version
+
+ redmine 2.0.4 ruby1.8 CentOS-6.3(x86_64) KK.Kon
+ redmine 2.1.6 ruby1.8 CentOS-6.3(x86_64) KK.Kon

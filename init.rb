@@ -16,10 +16,10 @@ end
 
 Redmine::Plugin.register :redmine_blogs do
   name 'Redmine Blogs plugin'
-  author 'A. Chaika, Kyanh, Eric Davis'
+  author 'A. Chaika, Kyanh, Eric Davis, KK.Kon'
   description 'Redmine Blog plugin'
   version '0.4.0'
-  requires_redmine :version_or_higher => '2.1.0'
+  requires_redmine :version_or_higher => '2.0'
 
   project_module :blogs do
     permission :manage_blogs, {:blogs => [:new, :edit, :destroy_comment, :destroy]}, :require => :member

@@ -2,3 +2,4 @@ Thanks go to the following people for patches and contributions:
 
 * Andrew Chaika - Maintainer
 * Eric Davis - Contributor
+* KK.Kon - Contributor
