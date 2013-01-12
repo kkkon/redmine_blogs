@@ -2,10 +2,17 @@
 
 <% if @blog.editable_by?(User.current) %>
 <div class="contextual">
-<%= link_to l(:button_edit), "#",
-            :class => 'icon icon-edit',
-            :accesskey => accesskey(:edit),
-            :onclick => '$("#edit-blog").show(); return false;' %>
+<% if Redmine::VERSION.to_s >= '2.1' %>
+  <%= link_to l(:button_edit), "#",
+              :class => 'icon icon-edit',
+              :accesskey => accesskey(:edit),
+              :onclick => '$("#edit-blog").show(); return false;' %>
+<% else %>
+  <%= link_to l(:button_edit), "#",
+              :class => 'icon icon-edit',
+              :accesskey => accesskey(:edit),
+              :onclick => 'Element.show("edit-blog"); return false;' %>
+<% end %>
 <%= link_to l(:button_delete),
             { :controller => 'blogs',
               :action => 'destroy',
@@ -22,8 +29,22 @@
                                             :multipart => true } do |f| %>
 <%= render :partial => 'form', :locals => { :f => f } %>
 <%= submit_tag l(:button_save) %>
-<%= preview_link({ :controller => 'blogs', :action => 'preview', :id => @blog }, 'blog-form') %>
-| <%= link_to l(:button_cancel), "#", :onclick => '$("#edit-blog").hide();' %>
+<% if Redmine::VERSION.to_s >= '2.1' %>
+  <%= preview_link({ :controller => 'blogs', :action => 'preview', :id => @blog }, 'blog-form') %>
+<% else %>
+  <%= link_to_remote l(:label_preview),
+                     { :url => { :controller => 'blogs', :action => 'preview', :project_id => @project },
+                       :method => 'post',
+                       :update => 'preview',
+                       :with => "Form.serialize('blog-form')"
+                     }, :accesskey => accesskey(:preview) %>
+<% end %>
+|
+<% if Redmine::VERSION.to_s >= '2.1' %>
+ <%= link_to l(:button_cancel), "#", :onclick => '$("#edit-blog").hide();' %>
+<% else %>
+ <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("edit-blog");' %>
+<% end %>
 <% end %>
 
 <div id="preview" class="wiki"></div>
@@ -68,7 +89,11 @@
 <%= text_area 'comment', 'comments', :cols => 80, :rows => 15, :class => 'wiki-edit' %>
 <%= wikitoolbar_for 'comment_comments' %>
 <%= submit_tag l(:button_add) %>
-<%= link_to l(:button_cancel), "#", :onclick => '$("#add_comment_form").hide();' %>
+<% if Redmine::VERSION.to_s >= '2.1' %>
+  <%= link_to l(:button_cancel), "#", :onclick => '$("#add_comment_form").hide();' %>
+<% else %>
+  <%= link_to l(:button_cancel), "#", :onclick => 'Element.hide("add_comment_form");' %>
+<% end %>
 <% end %>
 <% end %>
 
