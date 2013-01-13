@@ -1,11 +1,20 @@
 <% if User.current.allowed_to?(:manage_blogs, @project, :global => true) %>
 <div class="contextual">
-<%= link_to l(:label_post_new),
-            { :controller => 'blogs',
-              :action => 'new',
-              :project_id => @project },
-            :class => 'icon icon-add',
-            :onclick => '$("#add-blog").show(); return false;' %>
+<% if Redmine::VERSION.to_s >= '2.1' %>
+  <%= link_to l(:label_post_new),
+              { :controller => 'blogs',
+                :action => 'new',
+                :project_id => @project },
+              :class => 'icon icon-add',
+              :onclick => '$("#add-blog").show(); return false;' %>
+<% else %>
+  <%= link_to l(:label_post_new),
+              { :controller => 'blogs',
+                :action => 'new',
+                :project_id => @project },
+              :class => 'icon icon-add',
+              :onclick => 'Element.show("add-blog"); return false;' %>
+<% end %>
 </div>
 
 <div id="add-blog" style="display:none;">
