@@ -39,3 +39,8 @@ If you need help you can contact the maintainer.
 
  redmine 2.0.4 ruby1.8 CentOS-6.3(x86_64) KK.Kon
  redmine 2.1.6 ruby1.8 CentOS-6.3(x86_64) KK.Kon
+ redmine 2.2.1 ruby1.8 CentOS-6.3(x86_64) KK.Kon
+
+ redmine 2.0.4 ruby1.9.3 Ubuntu-12.04.1(x86_64) KK.Kon
+ redmine 2.1.6 ruby1.9.3 U4buntu-12.04.1(x86_64) KK.Kon
+ redmine 2.2.1 ruby1.9.3 U4buntu-12.04.1(x86_64) KK.Kon
